@@ -10,7 +10,6 @@ import java.time.LocalDate;
 public class TransactionRequestDto {
     String title;
     Double amount;
-    Type type;
     Category category;
     LocalDate date;
 }

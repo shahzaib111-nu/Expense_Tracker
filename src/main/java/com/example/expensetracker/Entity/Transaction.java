@@ -27,9 +27,6 @@ public class Transaction {
     private Double amount;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Type type;
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Category category;
     @Column(nullable = false)
     private LocalDate date;

@@ -41,6 +41,7 @@ public class AuthService {
                 .name(userRequestDto.getName())
                 .email(userRequestDto.getEmail())
                 .password(passwordEncoder.encode(userRequestDto.getPassword()))
+                .budget(userRequestDto.getBudget())
                 .authProvider(AuthProvider.LOCAL)
                 .build();
 

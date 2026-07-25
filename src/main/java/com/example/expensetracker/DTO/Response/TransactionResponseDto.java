@@ -15,9 +15,7 @@ public class TransactionResponseDto {
     Long id;
     String title;
     Double amount;
-    Type type;
     Category category;
     LocalDate date;
-
 
 }

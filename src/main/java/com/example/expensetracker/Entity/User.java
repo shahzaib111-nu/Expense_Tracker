@@ -29,7 +29,7 @@ public class User implements UserDetails {
     private String providerId;
     @Enumerated(EnumType.STRING)
     private AuthProvider authProvider;
-
+    private Double budget;
     @OneToMany(mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true)

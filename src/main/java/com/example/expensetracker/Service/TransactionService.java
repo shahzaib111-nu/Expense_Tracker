@@ -34,7 +34,6 @@ public class TransactionService {
                         transaction.getId(),
                         transaction.getTitle(),
                         transaction.getAmount(),
-                        transaction.getType(),
                         transaction.getCategory(),
                         transaction.getDate()
                 ))
@@ -46,7 +45,6 @@ public class TransactionService {
         transaction.setUser(user);
         transaction.setTitle(transactionRequestDto.getTitle());
         transaction.setAmount(transactionRequestDto.getAmount());
-        transaction.setType(transactionRequestDto.getType());
         transaction.setCategory(transactionRequestDto.getCategory());
         transaction.setDate(transactionRequestDto.getDate());
 
@@ -70,4 +68,13 @@ public class TransactionService {
         return modelMapper
                 .map(savedTransaction, TransactionResponseDto.class);
     }
+
+    public List<Transaction> getTransactionsByUserEmail(String userEmail) {
+        if (userEmail == null || userEmail.isBlank()) {
+            throw new IllegalArgumentException("User email cannot be null or empty");
+        }
+
+        return transactionRepository.findByUserEmail(userEmail);
+    }
+
 }

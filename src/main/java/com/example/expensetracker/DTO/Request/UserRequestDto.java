@@ -15,4 +15,5 @@ public class UserRequestDto {
     String email;
     @Nonnull
     String password;
+    Double budget;
 }
