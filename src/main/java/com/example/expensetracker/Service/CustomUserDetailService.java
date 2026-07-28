@@ -1,5 +1,6 @@
 package com.example.expensetracker.Service;
 
+import com.example.expensetracker.Exception.ResourceNotFoundException;
 import com.example.expensetracker.Repository.UserDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,7 +18,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return userDetailsRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+        return userDetailsRepository.findByEmail(username).orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + username));
 
     }
 }

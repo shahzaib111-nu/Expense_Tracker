@@ -4,6 +4,7 @@ package com.example.expensetracker.Service;
 import com.example.expensetracker.DTO.Response.LoginResponse;
 import com.example.expensetracker.Entity.User;
 import com.example.expensetracker.Enum.AuthProvider;
+import com.example.expensetracker.Exception.UserAlreadyPresentException;
 import com.example.expensetracker.Repository.UserDetailsRepository;
 import com.example.expensetracker.Security.AuthUtill;
 import lombok.RequiredArgsConstructor;
@@ -50,13 +51,14 @@ public class OAuth2Service {
                 userDetailsRepository.save(existingUser);
                 return ResponseEntity.ok(new LoginResponse(existingUser.getId(), authUtill.getAccessToken(existingUser)));
             } else {
-                throw new RuntimeException("User already exists with a different authentication provider.");
+                throw new UserAlreadyPresentException("User with email " + email + " already exists with a different authentication provider.");
             }
         }
 
         User newUser=User.builder()
                 .name(oAuth2User.getAttribute("name"))
                 .email(email)
+                .profilePic(oAuth2User.getAttribute("picture"))
                 .providerId(providerId)
                 .password(null)
                 .authProvider(providerType)

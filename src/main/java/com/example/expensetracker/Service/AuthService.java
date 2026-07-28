@@ -7,6 +7,7 @@ import com.example.expensetracker.DTO.Response.LoginResponse;
 import com.example.expensetracker.DTO.Response.UserResponseDto;
 import com.example.expensetracker.Entity.User;
 import com.example.expensetracker.Enum.AuthProvider;
+import com.example.expensetracker.Exception.UserAlreadyPresentException;
 import com.example.expensetracker.Repository.AuthRepository;
 import com.example.expensetracker.Repository.UserDetailsRepository;
 import com.example.expensetracker.Security.AuthUtill;
@@ -34,7 +35,7 @@ public class AuthService {
     public UserResponseDto register( UserRequestDto userRequestDto) {
         User user=authRepository.findByEmail(userRequestDto.getEmail()).orElse(null);
         if(user!=null){
-            throw new RuntimeException("User already exists");
+            throw new UserAlreadyPresentException("User with email " + userRequestDto.getEmail() + " already exists.");
         }
 
         user=User.builder()

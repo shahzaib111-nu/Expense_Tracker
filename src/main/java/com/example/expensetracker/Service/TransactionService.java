@@ -5,9 +5,11 @@ import com.example.expensetracker.DTO.Response.TransactionResponseDto;
 import com.example.expensetracker.Entity.Transaction;
 import com.example.expensetracker.Entity.User;
 import com.example.expensetracker.Enum.Category;
+import com.example.expensetracker.Exception.ResourceNotFoundException;
 import com.example.expensetracker.Repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -55,12 +57,12 @@ public class TransactionService {
     }
 
     public void deleteTransaction(User user, Long id) {
-        Transaction transaction = transactionRepository.findByIdAndUser(id, user).orElseThrow(() -> new RuntimeException("Transaction not found"));
+        Transaction transaction = transactionRepository.findByIdAndUser(id, user).orElseThrow(() -> new ResourceNotFoundException("Transaction not found with id: " + id));
         transactionRepository.deleteById(id);
     }
 
     public TransactionResponseDto updateTransaction(User user, Long id, TransactionRequestDto transactionRequestDto) {
-        Transaction transaction = transactionRepository.findByIdAndUser(id, user).orElseThrow(() -> new RuntimeException("Transaction not found"));
+        Transaction transaction = transactionRepository.findByIdAndUser(id, user).orElseThrow(() -> new ResourceNotFoundException("Transaction not found with id: " + id));
         modelMapper.map(transactionRequestDto, transaction);
 
         Transaction savedTransaction = transactionRepository.save(transaction);

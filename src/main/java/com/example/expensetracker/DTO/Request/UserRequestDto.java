@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserRequestDto {
+    String profilePic;
     @Nonnull
     String name;
     @Nonnull
