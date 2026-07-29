@@ -19,7 +19,7 @@ import java.util.Date;
 public class AuthUtill {
 
     //key component
-    @Value("${jwt.secretkey}")
+    @Value("${jwt.secret}")
     private String jwtSecret ;
 
     // header component
