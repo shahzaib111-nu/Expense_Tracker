@@ -19,7 +19,7 @@ target/
 *.iml
 *.ipr
 ### config ###
-src/main/resources/config.yaml
+Backend/src/main/resources/config.yaml
 
 ### NetBeans ###
 /nbproject/private/
