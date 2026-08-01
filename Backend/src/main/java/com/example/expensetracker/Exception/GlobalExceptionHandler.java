@@ -4,6 +4,7 @@ import com.example.expensetracker.DTO.Response.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -29,6 +30,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.NOT_FOUND); // Returns 404
     }
 
+    @ExceptionHandler(PasswordNotMatchException.class)
+    public ResponseEntity<ErrorResponse> handlePasswordNotMatch(PasswordNotMatchException ex, WebRequest request) {
+        ErrorResponse error=new ErrorResponse(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(UserAlreadyPresentException.class)
     public ResponseEntity<ErrorResponse> handleUserAlreadyPresent(UserAlreadyPresentException ex, WebRequest request) {
         ErrorResponse error = new ErrorResponse(
@@ -38,6 +49,15 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(error, HttpStatus.CONFLICT); // Returns 409
     }
+
+    // Handle OAuth2 failures
+    @ExceptionHandler(OAuth2AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleOAuth2Exception(OAuth2AuthenticationException ex, WebRequest request) {
+        String message = ex.getError() != null ? ex.getError().getDescription() : ex.getMessage();
+        ErrorResponse error = new ErrorResponse(LocalDateTime.now(), message, request.getDescription(false));
+        return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
+    }
+
     // Handle bad credentials or unauthorized access
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex, WebRequest request) {
@@ -48,6 +68,7 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(error, HttpStatus.UNAUTHORIZED);
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
         Map<String, String> fieldErrors = new HashMap<>();
@@ -65,6 +86,7 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST); // HTTP 400
     }
+
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ErrorResponse> handleTypeMismatch(
                         MethodArgumentTypeMismatchException ex, WebRequest request) {
@@ -75,6 +97,17 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException ex, WebRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                ex.getMessage(),
+                request.getDescription(false)
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
     // Handle all other unexpected exceptions (Catch-all)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, WebRequest request) {

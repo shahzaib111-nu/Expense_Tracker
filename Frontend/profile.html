@@ -27,6 +27,74 @@
             border-color: #10b981;
             box-shadow: 0 0 0 1px #10b981;
         }
+
+        #navAddExpenseBtn {
+            transition: none;
+        }
+
+        #navAddExpenseBtn:hover {
+            transform: none !important;
+        }
+
+        /* Category pill styling */
+        .category-pill {
+            transition: all 0.15s ease;
+        }
+
+        .category-pill.is-active {
+            background-color: #059669;
+            border-color: #059669;
+            color: #ffffff;
+            box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25);
+        }
+        
+        /* Professional Improvements */
+        header {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Smooth transitions for all interactive elements */
+        button, a {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        /* Improved card shadows and hover effects */
+        [class*="rounded-"] {
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+        }
+        
+        .border-slate-200:hover {
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+        
+        /* Enhanced input focus states */
+        input:focus, select:focus, textarea:focus {
+            transition: all 0.2s ease;
+        }
+        
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Professional modal backdrop */
+        #budgetModal, #passwordModal, #logoutModal {
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        
+        /* Button hover animations */
+        button:hover:not(:disabled) {
+            transform: translateY(-1px);
+        }
     </style>
 </head>
 
@@ -69,12 +137,11 @@
             </button>
 
             <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
-                <button class="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+                <button id="navAddExpenseBtn" type="button" class="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2 text-sm font-bold text-white shadow-sm hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
                     <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
                     Add Expense
                 </button>
-                <div id="userAvatar" class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-800 text-xs font-bold text-white">
-                    AM
+                <div id="userAvatar" class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-800 text-xs font-bold text-white cursor-pointer hover:bg-emerald-900 transition">
                 </div>
             </div>
         </nav>
@@ -329,6 +396,93 @@
 <script>
     document.addEventListener('DOMContentLoaded', () => {
 
+        // --- JWT PROTECTION CHECK ---
+                const token = localStorage.getItem('authToken') || localStorage.getItem('jwt');
+                if (!token) {
+                    window.location.href = 'login.html?redirect=profile';
+                    return;
+                }
+
+                function parseJwtProfile(tokenValue) {
+                    try {
+                        const cleanToken = tokenValue.replace(/^Bearer\s+/, '');
+                        const base64Url = cleanToken.split('.')[1];
+                        if (!base64Url) return null;
+                        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+                        const jsonPayload = decodeURIComponent(
+                            window.atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join('')
+                        );
+                        return JSON.parse(jsonPayload);
+                    } catch (error) {
+                        return null;
+                    }
+                }
+
+                function getInitials(name) {
+                    const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+                    if (parts.length === 0) return 'SK';
+                    if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+                    return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+                }
+
+                const expiryPayload = parseJwtProfile(token);
+                if (expiryPayload?.exp && expiryPayload.exp * 1000 <= Date.now()) {
+                    localStorage.clear();
+                    window.location.href = 'login.html?session=ended';
+                    return;
+                }
+
+        // --- UPDATE USER AVATAR WITH INITIALS ---
+        const userAvatar = document.getElementById('userAvatar');
+        const userStr = localStorage.getItem('user');
+                if (userStr) {
+          try {
+            const user = JSON.parse(userStr);
+            const name = user.name || user.username || 'User';
+                        userAvatar.textContent = getInitials(name);
+          } catch (e) {
+                        userAvatar.textContent = 'SK';
+          }
+        }
+
+        // --- FETCH PROFILE DATA FROM API ---
+        async function fetchProfileData() {
+          try {
+            const response = await fetch('http://localhost:8080/profile', {
+              method: 'GET',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              }
+            });
+            
+            if (response.status === 401 || response.status === 403) {
+              localStorage.clear();
+              window.location.href = 'login.html?session=ended';
+              return;
+            }
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            const profileName = data.name || data.fullName || data.username || 'User';
+                            const profileEmail = data.email || data.username || '';
+                            document.getElementById('fullNameInput').value = profileName;
+                            document.getElementById('emailInput').value = profileEmail;
+                            userAvatar.textContent = getInitials(profileName);
+                            localStorage.setItem('user', JSON.stringify({
+                                name: profileName,
+                                email: profileEmail,
+                                username: data.username || profileEmail || profileName
+                            }));
+            }
+          } catch (error) {
+            console.error('Error fetching profile data:', error);
+          }
+        }
+
+        // Fetch profile data on load
+        fetchProfileData();
+
         // -----------------------------------------
         // EDIT PROFILE LOGIC
         // -----------------------------------------
@@ -416,6 +570,126 @@
         const budgetModal = setupModal('openBudgetModalBtn', 'closeBudgetBtn', 'budgetModal');
         const passwordModal = setupModal('openPasswordModalBtn', 'closePasswordBtn', 'passwordModal');
 
+        // --- ADD EXPENSE MODAL HANDLERS ---
+        const transactionModal = document.getElementById('transactionModal');
+        const navAddExpenseBtn = document.getElementById('navAddExpenseBtn');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelFormBtn = document.getElementById('cancelFormBtn');
+        const transactionForm = document.getElementById('transactionForm');
+        const categoryInput = document.getElementById('category');
+        const categoryPills = Array.from(document.querySelectorAll('.category-pill'));
+        const TRANSACTIONS_API_URL = 'http://localhost:8080/api/transactions';
+        let selectedTransactionForUpdate = null;
+
+        function getAuthHeaders() {
+          const token = localStorage.getItem('authToken') || localStorage.getItem('jwt');
+          return {
+            'Authorization': `Bearer ${token || ''}`,
+            'Content-Type': 'application/json'
+          };
+        }
+
+        function openModal(transaction = null) {
+          selectedTransactionForUpdate = transaction;
+          const titleEl = document.getElementById('transactionModalTitle');
+          if (transaction) {
+            titleEl.textContent = 'Update Expense';
+            document.getElementById('title').value = transaction.title || '';
+            document.getElementById('amountDisplayInput').value = transaction.amount || '';
+            document.getElementById('date').value = transaction.date || '';
+            categoryInput.value = transaction.category || 'FOOD';
+            updateCategoryPills();
+          } else {
+            titleEl.textContent = 'Record an Expense';
+            transactionForm.reset();
+            categoryInput.value = 'FOOD';
+            document.getElementById('amountDisplayInput').focus();
+            updateCategoryPills();
+          }
+          transactionModal.classList.remove('hidden');
+          transactionModal.classList.add('flex');
+          document.body.classList.add('overflow-hidden');
+        }
+
+        function closeModal() {
+          transactionModal.classList.add('hidden');
+          transactionModal.classList.remove('flex');
+          document.body.classList.remove('overflow-hidden');
+          transactionForm.reset();
+          selectedTransactionForUpdate = null;
+        }
+
+        function updateCategoryPills() {
+          categoryPills.forEach(pill => {
+            const isActive = pill.dataset.categoryValue === categoryInput.value;
+            if (isActive) {
+              pill.classList.add('is-active');
+            } else {
+              pill.classList.remove('is-active');
+            }
+          });
+        }
+
+        // Open modal on button click
+        if (navAddExpenseBtn) navAddExpenseBtn.addEventListener('click', () => openModal());
+        
+        // Close modal
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelFormBtn.addEventListener('click', closeModal);
+
+        // Category pill selection
+        categoryPills.forEach(pill => {
+          pill.addEventListener('click', (e) => {
+            e.preventDefault();
+            categoryInput.value = pill.dataset.categoryValue;
+            updateCategoryPills();
+          });
+        });
+
+        // Form submission
+        transactionForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const formData = new FormData(transactionForm);
+          const transaction = {
+            title: formData.get('title'),
+            amount: Number(formData.get('amount')),
+            category: String(formData.get('category')).toUpperCase(),
+            date: formData.get('date')
+          };
+
+          try {
+            const url = selectedTransactionForUpdate ? `${TRANSACTIONS_API_URL}/${selectedTransactionForUpdate.id}` : TRANSACTIONS_API_URL;
+            const method = selectedTransactionForUpdate ? 'PUT' : 'POST';
+            const response = await fetch(url, {
+              method: method,
+              headers: getAuthHeaders(),
+              body: JSON.stringify(transaction)
+            });
+
+            if (response.status === 401 || response.status === 403) {
+              localStorage.clear();
+              window.location.href = 'login.html?session=ended';
+              return;
+            }
+            if (!response.ok) throw new Error('Failed to save expense');
+
+            closeModal();
+            // Show success message
+            const formMessage = document.getElementById('formMessage');
+            formMessage.textContent = 'Expense saved successfully!';
+            formMessage.classList.remove('text-red-600');
+            formMessage.classList.add('text-emerald-600');
+            setTimeout(() => {
+              formMessage.textContent = '';
+            }, 3000);
+          } catch (error) {
+            console.error('Error saving expense:', error);
+            const formMessage = document.getElementById('formMessage');
+            formMessage.textContent = 'Error saving. Please try again.';
+            formMessage.classList.add('text-red-600');
+          }
+        });
+
         // Logout Modals
         const logoutModal = document.getElementById('logoutModal');
         const logoutTriggers = [document.getElementById('navLogoutBtn'), document.getElementById('mainLogoutBtn')];
@@ -458,5 +732,65 @@
         });
     });
 </script>
+
+<!-- Transaction Modal for Add Expense -->
+<div id="transactionModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/55 px-3 py-6 backdrop-blur-sm">
+  <section class="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-lg border border-emerald-100 bg-white p-4 shadow-2xl shadow-slate-900/20 sm:p-6">
+    <div class="mb-5 flex items-start justify-between gap-4">
+      <div>
+        <h2 id="transactionModalTitle" class="text-lg font-bold text-slate-900">Record an Expense</h2>
+        <p id="transactionModalDescription" class="hidden"></p>
+      </div>
+      <button id="closeModalBtn" type="button" class="flex h-9 w-9 shrink-0 items-center justify-center gap-1 rounded-lg text-slate-500 transition hover:bg-slate-50 hover:text-red-500">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" /></svg>
+      </button>
+    </div>
+
+    <form id="transactionForm" class="grid gap-5">
+      <div class="rounded-lg bg-emerald-50/80 border border-emerald-100 px-5 py-6 text-center">
+        <p class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-emerald-700">Amount</p>
+        <div class="mt-2 flex items-center justify-center gap-2">
+          <span class="text-3xl font-extrabold text-slate-400">₨</span>
+          <input id="amountDisplayInput" name="amount" type="number" min="0.01" step="0.01" required placeholder="0.00" inputmode="decimal" class="w-48 border-0 bg-transparent text-center text-4xl font-extrabold text-slate-900 placeholder-slate-300 focus:outline-none focus:ring-0 sm:w-56">
+        </div>
+      </div>
+
+      <div class="grid gap-4 sm:grid-cols-2">
+        <div>
+          <label for="title" class="mb-1.5 block text-sm font-semibold text-slate-700">Expense Name</label>
+          <input id="title" name="title" type="text" required placeholder="e.g. Grocery Trip" class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 placeholder-slate-400 transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+        <div>
+          <label for="date" class="mb-1.5 block text-sm font-semibold text-slate-700">Date</label>
+          <input id="date" name="date" type="date" required class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+        </div>
+      </div>
+
+      <div>
+        <label class="mb-1.5 block text-sm font-semibold text-slate-700">Category</label>
+        <input type="hidden" id="category" name="category" value="FOOD">
+        <div class="flex flex-wrap gap-2">
+          <button type="button" data-category-value="FOOD" class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Food</button>
+          <button type="button" data-category-value="TRANSPORT" class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Transport</button>
+          <button type="button" data-category-value="SHOPPING" class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Shopping</button>
+          <button type="button" data-category-value="HEALTH" class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Health</button>
+          <button type="button" data-category-value="EDUCATION" class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Education</button>
+          <button type="button" data-category-value="ENTERTAINMENT" class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Entertainment</button>
+          <button type="button" data-category-value="BILLS" class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Bills</button>
+          <button type="button" data-category-value="RENT" class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Housing</button>
+          <button type="button" data-category-value="OTHER" class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Other</button>
+        </div>
+      </div>
+
+      <p id="formMessage" class="text-sm font-medium text-emerald-600"></p>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <button id="cancelFormBtn" type="button" class="inline-flex min-h-11 flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300">Cancel</button>
+        <button type="submit" class="inline-flex min-h-11 flex-[2] items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-emerald-100 transition hover:bg-emerald-700">Save Expense</button>
+      </div>
+    </form>
+  </section>
+</div>
+
 </body>
 </html>

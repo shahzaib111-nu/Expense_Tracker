@@ -7,7 +7,6 @@ import com.example.expensetracker.DTO.Response.UserResponseDto;
 import com.example.expensetracker.Service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

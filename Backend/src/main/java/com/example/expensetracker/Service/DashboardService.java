@@ -59,7 +59,7 @@ public class DashboardService {
 
         return transactions.stream()
                 .map(transaction -> modelMapper.map(transaction, TransactionResponseDto.class))
-                .collect(Collectors.toList());
+                .toList();
 
     }
 }

@@ -8,13 +8,105 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
   <style>
     body {
       font-family: 'Inter', sans-serif;
     }
+
     .app-bg {
       background-color: #f8fafc;
+    }
+
+    /* Professional Improvements */
+    header {
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    }
+
+    /* Smooth transitions for all interactive elements */
+    button,
+    a {
+      transition: all 0.2s ease-in-out;
+    }
+
+    /* Improved card shadows and hover effects */
+    [class*="rounded-"] {
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .border-slate-200:hover {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+    }
+
+    /* Enhanced input focus states */
+    input:focus,
+    select:focus,
+    textarea:focus {
+      transition: all 0.2s ease;
+    }
+
+    /* Smooth scroll behavior */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    /* Professional modal backdrop */
+    #logoutModal,
+    #transactionModal {
+      animation: fadeIn 0.2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Button hover animations - removed for add expense button */
+    .js-add-expense-btn:hover:not(:disabled) {
+      /* No transform animation */
+    }
+
+    #navAddExpenseBtn,
+    #mobileAddExpenseBtn {
+      transition: none;
+    }
+
+    #navAddExpenseBtn:hover,
+    #mobileAddExpenseBtn:hover {
+      transform: none !important;
+    }
+
+    /* Table row hover effect */
+    tbody tr:hover {
+      background-color: rgba(16, 185, 129, 0.03);
+    }
+
+    /* Category pill styling */
+    .category-pill {
+      transition: all 0.15s ease;
+    }
+
+    .category-pill.is-active {
+      background-color: #059669;
+      border-color: #059669;
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25);
+    }
+
+    #amountDisplayInput::-webkit-outer-spin-button,
+    #amountDisplayInput::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    #amountDisplayInput {
+      -moz-appearance: textfield;
     }
   </style>
 </head>
@@ -24,12 +116,14 @@
   <!-- Header -->
   <header class="sticky top-0 z-40 bg-white border-b border-slate-200">
     <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
-      
+
       <!-- Logo -->
       <a href="dashboard.html" class="flex items-center gap-3">
-        <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white shadow-md shadow-emerald-200">
+        <span
+          class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white shadow-md shadow-emerald-200">
           <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
           </svg>
         </span>
         <span class="text-lg font-bold text-slate-900">Tracker</span>
@@ -37,112 +131,146 @@
 
       <!-- Navigation & Actions -->
       <nav class="hidden md:flex items-center gap-6">
-        <a href="dashboard.html" class="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+        <a href="dashboard.html"
+          class="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
           Dashboard
         </a>
-        <a href="transactions.html" class="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-emerald-700 transition">
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+        <a href="transactions.html"
+          class="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-emerald-700 transition">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"></line>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+          </svg>
           Expenses
         </a>
-        
-        <a href="#" class="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-emerald-700 transition">
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+
+        <a href="profile.html"
+          class="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-emerald-700 transition">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
           Profile
         </a>
 
-        <button type="button" class="js-logout flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-red-600 transition">
-          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+        <button type="button" id="navLogoutBtn"
+          class="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-red-600 transition">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
           Logout
         </button>
-        
+
         <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
-          <button class="js-add-expense-btn inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
-            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          <button id="navAddExpenseBtn"
+            class="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2 text-sm font-bold text-white shadow-sm hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+            <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none">
+              <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+            </svg>
             Add Expense
           </button>
-          <div id="userAvatar" class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-800 text-xs font-bold text-white">
-            AM
+          <div id="userAvatar"
+            class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-800 text-xs font-bold text-white cursor-pointer hover:bg-emerald-900 transition">
           </div>
         </div>
       </nav>
 
       <button class="md:hidden p-2 text-slate-500">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
       </button>
     </div>
   </header>
 
   <main class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-    
+
     <!-- Title Section with Dynamic Welcome Message -->
     <section class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Welcome, <span id="welcomeUsername" class="text-emerald-600">User</span>! 👋</h1>
+        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Welcome, <span id="welcomeUsername"
+            class="text-emerald-600">User</span>! 👋</h1>
         <p class="mt-1 text-sm text-slate-500">Track your budget and analyze your spending.</p>
       </div>
-      <button class="js-add-expense-btn md:hidden inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700">
-        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+      <button id="mobileAddExpenseBtn"
+        class="md:hidden inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700">
+        <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+        </svg>
         Add Expense
       </button>
     </section>
 
     <!-- UPPER PORTION: Target, Used, Remaining, Daily Avg & Transaction Count -->
     <section class="mb-8 grid gap-6 lg:grid-cols-3">
-        
-        <!-- Large Left Card: Spending Target -->
-        <div class="rounded-[1.25rem] border border-slate-200 bg-white p-8 shadow-sm lg:col-span-2">
-            <h2 class="mb-6 text-xs font-black uppercase tracking-wider text-slate-400">This Month's Spending Target</h2>
-            
-            <div class="flex flex-col md:flex-row items-center gap-12">
-                <!-- Circular Target Graphic -->
-                <div class="relative h-[220px] w-[220px] flex-shrink-0">
-                    <canvas id="targetArcChart"></canvas>
-                    <div class="absolute inset-0 flex flex-col items-center justify-center pt-6 text-center">
-                        <span id="arcExpense" class="text-3xl font-black tracking-tight text-slate-900">Rs 0.00</span>
-                        <span class="mt-1 text-xs font-medium text-slate-500">spent of <span id="arcBudget" class="font-bold text-slate-700">Rs 0.00</span></span>
-                    </div>
-                </div>
 
-                <!-- Used & Remaining Stats -->
-                <div class="flex-1 w-full space-y-8">
-                    <div>
-                        <p class="text-sm font-bold text-slate-500">Used</p>
-                        <p id="usedPercentage" class="mt-1 text-4xl font-black tracking-tight text-slate-900">0%</p>
-                        <div class="mt-3 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
-                            <div id="usedProgressBar" class="h-full rounded-full bg-emerald-500 transition-all duration-500" style="width: 0%"></div>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="text-sm font-bold text-slate-500">Remaining</p>
-                        <p id="remainAmount" class="mt-1 text-4xl font-black tracking-tight text-slate-900">Rs 0.00</p>
-                        <p class="mt-1 text-xs font-medium text-slate-400">left to spend</p>
-                    </div>
-                </div>
+      <!-- Large Left Card: Spending Target -->
+      <div class="rounded-[1.25rem] border border-slate-200 bg-white p-8 shadow-sm lg:col-span-2">
+        <h2 class="mb-6 text-xs font-black uppercase tracking-wider text-slate-400">This Month's Spending Target</h2>
+
+        <div class="flex flex-col md:flex-row items-center gap-12">
+          <!-- Circular Target Graphic -->
+          <div class="relative h-[220px] w-[220px] flex-shrink-0">
+            <canvas id="targetArcChart"></canvas>
+            <div class="absolute inset-0 flex flex-col items-center justify-center pt-6 text-center">
+              <span id="arcExpense" class="text-3xl font-black tracking-tight text-slate-900">Rs 0.00</span>
+              <span class="mt-1 text-xs font-medium text-slate-500">spent of <span id="arcBudget"
+                  class="font-bold text-slate-700">Rs 0.00</span></span>
             </div>
+          </div>
+
+          <!-- Used & Remaining Stats -->
+          <div class="flex-1 w-full space-y-8">
+            <div>
+              <p class="text-sm font-bold text-slate-500">Used</p>
+              <p id="usedPercentage" class="mt-1 text-4xl font-black tracking-tight text-slate-900">0%</p>
+              <div class="mt-3 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+                <div id="usedProgressBar" class="h-full rounded-full bg-emerald-500 transition-all duration-500"
+                  style="width: 0%"></div>
+              </div>
+            </div>
+            <div>
+              <p class="text-sm font-bold text-slate-500">Remaining</p>
+              <p id="remainAmount" class="mt-1 text-4xl font-black tracking-tight text-slate-900">Rs 0.00</p>
+              <p class="mt-1 text-xs font-medium text-slate-400">left to spend</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Cards: Daily Avg & Transactions Count -->
+      <div class="flex flex-col gap-6 lg:col-span-1">
+        <!-- Daily Avg Card -->
+        <div
+          class="flex flex-1 flex-col justify-center rounded-[1.25rem] border border-slate-200 bg-white p-8 shadow-sm">
+          <p class="text-xs font-black uppercase tracking-wider text-slate-400">Daily Avg</p>
+          <p id="dailyAvgAmount" class="mt-2 text-4xl font-black tracking-tight text-slate-900">Rs 0.00</p>
+          <p class="mt-1 text-xs font-medium text-slate-400">per day spent</p>
         </div>
 
-        <!-- Right Cards: Daily Avg & Transactions Count -->
-        <div class="flex flex-col gap-6 lg:col-span-1">
-            <!-- Daily Avg Card -->
-            <div class="flex flex-1 flex-col justify-center rounded-[1.25rem] border border-slate-200 bg-white p-8 shadow-sm">
-                <p class="text-xs font-black uppercase tracking-wider text-slate-400">Daily Avg</p>
-                <p id="dailyAvgAmount" class="mt-2 text-4xl font-black tracking-tight text-slate-900">Rs 0.00</p>
-                <p class="mt-1 text-xs font-medium text-slate-400">per day spent</p>
-            </div>
-            
-            <!-- Transactions Count Card -->
-            <div class="flex flex-1 flex-col justify-center rounded-[1.25rem] border border-slate-200 bg-white p-8 shadow-sm">
-                <p class="text-xs font-black uppercase tracking-wider text-slate-400">Transactions Count</p>
-                <p class="mt-2 text-4xl font-black tracking-tight text-slate-900"><span id="transactionCount">0</span></p>
-                <p class="mt-1 text-xs font-medium text-slate-400">total recorded transactions</p>
-            </div>
+        <!-- Transactions Count Card -->
+        <div
+          class="flex flex-1 flex-col justify-center rounded-[1.25rem] border border-slate-200 bg-white p-8 shadow-sm">
+          <p class="text-xs font-black uppercase tracking-wider text-slate-400">Transactions Count</p>
+          <p class="mt-2 text-4xl font-black tracking-tight text-slate-900"><span id="transactionCount">0</span></p>
+          <p class="mt-1 text-xs font-medium text-slate-400">total recorded transactions</p>
         </div>
+      </div>
     </section>
 
     <!-- Content Grid: Donut Chart & Recent Spending -->
     <section class="grid gap-6 lg:grid-cols-3">
-      
+
       <!-- Donut Chart Area (Spending By Category) -->
       <div class="rounded-[1.25rem] border border-slate-200 bg-white p-6 shadow-sm lg:col-span-1">
         <h2 class="mb-4 text-xs font-black uppercase tracking-wider text-slate-400">Spending By Category</h2>
@@ -157,7 +285,7 @@
           <h2 class="text-xs font-black uppercase tracking-wider text-slate-400">Recent Spending</h2>
           <a href="transactions.html" class="text-sm font-bold text-emerald-600 hover:text-emerald-700">View all</a>
         </div>
-        
+
         <div class="overflow-x-auto p-2">
           <table class="w-full text-left border-collapse">
             <tbody id="recentSpendingList" class="divide-y divide-slate-50">
@@ -170,55 +298,104 @@
 
   </main>
 
-  <!-- Logout Confirmation Modal -->
-  <div id="logoutModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm px-4">
+  <!-- Add / Update Transaction Modal -->
+  <div id="transactionModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/55 px-3 py-6 backdrop-blur-sm">
+    <section
+      class="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-lg border border-emerald-100 bg-white p-4 shadow-2xl shadow-slate-900/20 sm:p-6">
+      <div class="mb-5 flex items-start justify-between gap-4">
+        <div>
+          <h2 id="transactionModalTitle" class="text-lg font-bold text-slate-900">Record an Expense</h2>
+          <p id="transactionModalDescription" class="hidden"></p>
+        </div>
+        <button id="closeModalBtn" type="button"
+          class="flex h-9 w-9 shrink-0 items-center justify-center gap-1 rounded-lg text-slate-500 transition hover:bg-slate-50 hover:text-red-500">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+
+      <form id="transactionForm" class="grid gap-5">
+        <div class="rounded-lg bg-emerald-50/80 border border-emerald-100 px-5 py-6 text-center">
+          <p class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-emerald-700">Amount</p>
+          <div class="mt-2 flex items-center justify-center gap-2">
+            <span class="text-3xl font-extrabold text-slate-400">₨</span>
+            <input id="amountDisplayInput" name="amount" type="number" min="0.01" step="0.01" required
+              placeholder="0.00" inputmode="decimal"
+              class="w-48 border-0 bg-transparent text-center text-4xl font-extrabold text-slate-900 placeholder-slate-300 focus:outline-none focus:ring-0 sm:w-56">
+          </div>
+        </div>
+
+        <div class="grid gap-4 sm:grid-cols-2">
+          <div>
+            <label for="title" class="mb-1.5 block text-sm font-semibold text-slate-700">Expense Name</label>
+            <input id="title" name="title" type="text" required placeholder="e.g. Grocery Trip"
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 placeholder-slate-400 transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          </div>
+          <div>
+            <label for="date" class="mb-1.5 block text-sm font-semibold text-slate-700">Date</label>
+            <input id="date" name="date" type="date" required
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          </div>
+        </div>
+
+        <div>
+          <label class="mb-1.5 block text-sm font-semibold text-slate-700">Category</label>
+          <input type="hidden" id="category" name="category" value="FOOD">
+          <div class="flex flex-wrap gap-2">
+            <button type="button" data-category-value="FOOD"
+              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Food</button>
+            <button type="button" data-category-value="TRANSPORT"
+              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Transport</button>
+            <button type="button" data-category-value="SHOPPING"
+              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Shopping</button>
+            <button type="button" data-category-value="HEALTH"
+              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Health</button>
+            <button type="button" data-category-value="EDUCATION"
+              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Education</button>
+            <button type="button" data-category-value="ENTERTAINMENT"
+              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Entertainment</button>
+            <button type="button" data-category-value="BILLS"
+              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Bills</button>
+            <button type="button" data-category-value="RENT"
+              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Housing</button>
+            <button type="button" data-category-value="OTHER"
+              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Other</button>
+          </div>
+        </div>
+
+        <p id="formMessage" class="text-sm font-medium text-emerald-600"></p>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="cancelFormBtn" type="button"
+            class="inline-flex min-h-11 flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300">Cancel</button>
+          <button type="submit"
+            class="inline-flex min-h-11 flex-[2] items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-emerald-100 transition hover:bg-emerald-700">Save
+            Expense</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <!-- Logout Modal -->
+  <div id="logoutModal"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm px-4">
     <div class="w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl text-center">
       <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 text-red-600 mb-4">
         <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
         </svg>
       </div>
       <h3 class="text-lg font-bold text-slate-900">Confirm Logout</h3>
-      <p class="mt-2 text-sm text-slate-500">Are you sure you want to log out? All active session tokens will be removed.</p>
+      <p class="mt-2 text-sm text-slate-500">Are you sure you want to log out?</p>
       <div class="mt-6 flex justify-end gap-3">
-        <button id="cancelLogoutBtn" type="button" class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition">Cancel</button>
-        <button id="confirmLogoutBtn" type="button" class="px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg transition shadow-md shadow-red-200">Logout</button>
+        <button id="cancelLogoutBtn" type="button"
+          class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg transition">Cancel</button>
+        <button id="confirmLogoutBtn" type="button"
+          class="px-4 py-2 text-sm font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg transition shadow-md shadow-red-200">Logout</button>
       </div>
-    </div>
-  </div>
-
-  <!-- Add Expense Modal -->
-  <div id="addExpenseModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/50 backdrop-blur-sm px-4">
-    <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
-      <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
-        <h3 class="text-lg font-bold text-slate-900">Add New Expense</h3>
-        <button id="closeAddExpenseModal" type="button" class="text-slate-400 hover:text-slate-600 text-xl font-bold">&times;</button>
-      </div>
-      <form id="addExpenseForm" class="space-y-4">
-        <div>
-          <label for="expenseTitle" class="block text-xs font-bold uppercase text-slate-500 mb-1">Title / Description</label>
-          <input type="text" id="expenseTitle" required placeholder="e.g. Lunch, Bus Fare" class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-        </div>
-        <div>
-          <label for="expenseAmount" class="block text-xs font-bold uppercase text-slate-500 mb-1">Amount (Rs)</label>
-          <input type="number" step="0.01" id="expenseAmount" required placeholder="0.00" class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-        </div>
-        <div>
-          <label for="expenseCategory" class="block text-xs font-bold uppercase text-slate-500 mb-1">Category</label>
-          <select id="expenseCategory" class="w-full px-3 py-2.5 border border-slate-300 rounded-lg text-sm text-slate-800 focus:outline-none focus:ring-2 focus:ring-emerald-500">
-            <option value="FOOD">Food</option>
-            <option value="TRANSPORT">Transport</option>
-            <option value="SHOPPING">Shopping</option>
-            <option value="UTILITIES">Utilities</option>
-            <option value="ENTERTAINMENT">Entertainment</option>
-            <option value="OTHER">Other</option>
-          </select>
-        </div>
-        <div class="pt-3 flex justify-end gap-3">
-          <button type="button" id="cancelAddExpenseBtn" class="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-lg">Cancel</button>
-          <button type="submit" id="saveExpenseBtn" class="px-5 py-2 text-sm font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-lg shadow-md shadow-emerald-200">Save Expense</button>
-        </div>
-      </form>
     </div>
   </div>
 
@@ -270,10 +447,17 @@
     }
 
     // Initialize Username Banner
+    function getInitials(name) {
+      const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return 'US';
+      if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+      return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+    }
+
     function initUser() {
       const storedUser = localStorage.getItem('user');
       let username = 'User';
-      
+
       if (storedUser) {
         try {
           const parsed = JSON.parse(storedUser);
@@ -282,16 +466,11 @@
           console.error("Error reading stored user context", e);
         }
       }
-      
+
       document.getElementById('welcomeUsername').textContent = username;
-      
+
       // Calculate Initials safely
-      const words = username.trim().split(/\s+/);
-      let initials = 'US';
-      if (words.length > 0 && words[0]) {
-        initials = words.map(n => n[0]).join('').toUpperCase().slice(0, 2);
-      }
-      document.getElementById('userAvatar').textContent = initials;
+      document.getElementById('userAvatar').textContent = getInitials(username);
     }
 
     // Fetch live API data and sync UI
@@ -357,7 +536,7 @@
       // Top Summary Section
       document.getElementById('arcExpense').textContent = formatCurrency(data.expense);
       document.getElementById('arcBudget').textContent = formatCurrency(data.budget);
-      
+
       const remainEl = document.getElementById('remainAmount');
       remainEl.textContent = formatCurrency(data.remain);
       if (data.remain < 0) {
@@ -367,20 +546,20 @@
       }
 
       document.getElementById('dailyAvgAmount').textContent = formatCurrency(data.dailyAvg);
-      
+
       // Transactions Count
       document.getElementById('transactionCount').textContent = data.count;
 
       // Used Percentage capped at 100%
       let rawPercent = data.budget > 0 ? Math.round((data.expense / data.budget) * 100) : 0;
       let displayPercent = Math.min(100, rawPercent);
-      
+
       document.getElementById('usedPercentage').textContent = displayPercent + '%';
       document.getElementById('usedProgressBar').style.width = displayPercent + '%';
 
       // Charts & Tables
       renderTargetArc(data.expense, data.budget);
-      
+
       const chartLabels = data.expensebyCategory.map(item => formatLabel(item.category));
       const chartDataValues = data.expensebyCategory.map(item => item.expense);
       renderCategoryDonutChart(chartLabels, chartDataValues);
@@ -423,7 +602,7 @@
     // Dynamic Donut Chart with Category Percentages
     function renderCategoryDonutChart(labels, dataValues) {
       const ctx = document.getElementById('categoryChart').getContext('2d');
-      
+
       if (categoryChartInstance) {
         categoryChartInstance.destroy();
       }
@@ -440,7 +619,7 @@
       categoryChartInstance = new Chart(ctx, {
         type: 'doughnut',
         data: {
-          labels: labelsWithPercent, 
+          labels: labelsWithPercent,
           datasets: [{
             data: dataValues,
             backgroundColor: [
@@ -456,7 +635,7 @@
           maintainAspectRatio: false,
           cutout: '68%',
           plugins: {
-            legend: { 
+            legend: {
               position: 'right',
               labels: {
                 usePointStyle: true,
@@ -467,7 +646,7 @@
             },
             tooltip: {
               callbacks: {
-                label: function(context) {
+                label: function (context) {
                   let value = context.raw;
                   let percentage = totalCategoryExpense > 0 ? Math.round((value / totalCategoryExpense) * 100) : 0;
                   return ` ${formatCurrency(value)} (${percentage}%)`;
@@ -482,7 +661,7 @@
     // Recent Spending Table Rendering
     function renderRecentSpending(transactions) {
       const container = document.getElementById('recentSpendingList');
-      
+
       if (!transactions || transactions.length === 0) {
         container.innerHTML = `<tr><td class="p-6 text-center text-sm text-slate-500">No recent transactions found.</td></tr>`;
         return;
@@ -492,7 +671,7 @@
         const title = tx.title || tx.description || 'Transaction';
         const category = formatLabel(tx.category || 'OTHER');
         const date = tx.date || tx.createdAt || 'Recent';
-        
+
         return `
           <tr class="transition hover:bg-slate-50/50 group">
             <td class="py-3 px-4">
@@ -518,6 +697,34 @@
 
     // Initialize Components on Load
     document.addEventListener('DOMContentLoaded', () => {
+
+      // --- JWT PROTECTION CHECK ---
+      const token = localStorage.getItem('authToken') || localStorage.getItem('jwt');
+      if (!token) {
+        window.location.href = 'login.html?redirect=dashboard';
+        return;
+      }
+
+      const expiryMatch = parseJwtDashboard(token);
+      if (expiryMatch?.exp && expiryMatch.exp * 1000 <= Date.now()) {
+        localStorage.clear();
+        window.location.href = 'login.html?session=ended';
+        return;
+      }
+
+      // --- UPDATE USER AVATAR WITH INITIALS ---
+      const userAvatar = document.getElementById('userAvatar');
+      const userStr = localStorage.getItem('user');
+      if (userStr) {
+        try {
+          const user = JSON.parse(userStr);
+          const name = user.name || user.username || 'User';
+          const initials = name.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+          userAvatar.textContent = initials;
+        } catch (e) {
+          userAvatar.textContent = 'U';
+        }
+      }
 
       // --- OAUTH REDIRECT TOKEN HANDLER ---
       const urlParams = new URLSearchParams(window.location.search);
@@ -548,17 +755,17 @@
 
       // Logout Handlers
       const logoutModal = document.getElementById('logoutModal');
-      const logoutButtons = document.querySelectorAll('.js-logout');
+      const logoutBtn = document.getElementById('navLogoutBtn');
       const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');
       const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
 
-      logoutButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
           e.preventDefault();
           logoutModal.classList.remove('hidden');
           logoutModal.classList.add('flex');
         });
-      });
+      }
 
       cancelLogoutBtn.addEventListener('click', () => {
         logoutModal.classList.add('hidden');
@@ -570,77 +777,116 @@
         window.location.href = 'login.html';
       });
 
-      // Add Expense Modal Handlers
-      const addExpenseModal = document.getElementById('addExpenseModal');
-      const addExpenseBtns = document.querySelectorAll('.js-add-expense-btn');
-      const closeAddExpenseModal = document.getElementById('closeAddExpenseModal');
-      const cancelAddExpenseBtn = document.getElementById('cancelAddExpenseBtn');
-      const addExpenseForm = document.getElementById('addExpenseForm');
-      const saveExpenseBtn = document.getElementById('saveExpenseBtn');
+      // Transaction Modal Handlers
+      const TRANSACTIONS_API_URL = 'http://localhost:8080/api/transactions';
+      const transactionModal = document.getElementById('transactionModal');
+      const navAddExpenseBtn = document.getElementById('navAddExpenseBtn');
+      const mobileAddExpenseBtn = document.getElementById('mobileAddExpenseBtn');
+      const closeModalBtn = document.getElementById('closeModalBtn');
+      const cancelFormBtn = document.getElementById('cancelFormBtn');
+      const transactionForm = document.getElementById('transactionForm');
+      const categoryInput = document.getElementById('category');
+      const categoryPills = Array.from(document.querySelectorAll('.category-pill'));
+      let selectedTransactionForUpdate = null;
 
-      function openModal() {
-        addExpenseModal.classList.remove('hidden');
-        addExpenseModal.classList.add('flex');
+      function getAuthHeaders() {
+        const token = localStorage.getItem('authToken') || localStorage.getItem('jwt');
+        return {
+          'Authorization': `Bearer ${token || ''}`,
+          'Content-Type': 'application/json'
+        };
+      }
+
+      function openModal(transaction = null) {
+        selectedTransactionForUpdate = transaction;
+        const titleEl = document.getElementById('transactionModalTitle');
+        if (transaction) {
+          titleEl.textContent = 'Update Expense';
+          document.getElementById('title').value = transaction.title || '';
+          document.getElementById('amountDisplayInput').value = transaction.amount || '';
+          document.getElementById('date').value = transaction.date || '';
+          categoryInput.value = transaction.category || 'FOOD';
+          updateCategoryPills();
+        } else {
+          titleEl.textContent = 'Record an Expense';
+          transactionForm.reset();
+          categoryInput.value = 'FOOD';
+          document.getElementById('amountDisplayInput').focus();
+          updateCategoryPills();
+        }
+        transactionModal.classList.remove('hidden');
+        transactionModal.classList.add('flex');
+        document.body.classList.add('overflow-hidden');
       }
 
       function closeModal() {
-        addExpenseModal.classList.add('hidden');
-        addExpenseModal.classList.remove('flex');
-        addExpenseForm.reset();
+        transactionModal.classList.add('hidden');
+        transactionModal.classList.remove('flex');
+        document.body.classList.remove('overflow-hidden');
+        transactionForm.reset();
+        selectedTransactionForUpdate = null;
       }
 
-      addExpenseBtns.forEach(btn => btn.addEventListener('click', openModal));
-      closeAddExpenseModal.addEventListener('click', closeModal);
-      cancelAddExpenseBtn.addEventListener('click', closeModal);
-
-      // Handle Adding new Expense via API
-      addExpenseForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        
-        const title = document.getElementById('expenseTitle').value.trim();
-        const amount = parseFloat(document.getElementById('expenseAmount').value);
-        const category = document.getElementById('expenseCategory').value;
-
-        if (title && amount > 0) {
-          saveExpenseBtn.disabled = true;
-          saveExpenseBtn.textContent = 'Saving...';
-          
-          try {
-            let token = localStorage.getItem('jwt') || localStorage.getItem('authToken');
-            if (token) token = token.replace(/^Bearer\s+/, '');
-
-            // Sending POST request to backend
-            const res = await fetch('http://localhost:8080/transaction', {
-              method: 'POST',
-              headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({ 
-                title: title, 
-                amount: amount, 
-                category: category 
-              })
-            });
-
-            if (res.ok) {
-              closeModal();
-              await fetchDashboardData(); 
-            } else {
-              const errorText = await res.text();
-              console.error("Backend Error:", errorText);
-              alert("Failed to save transaction. Please verify backend constraints.");
-            }
-          } catch (error) {
-            console.error("Network error while saving expense:", error);
-            alert("Connection error. Ensure your server on port 8080 is running.");
-          } finally {
-            saveExpenseBtn.disabled = false;
-            saveExpenseBtn.textContent = 'Save Expense';
+      function updateCategoryPills() {
+        categoryPills.forEach(pill => {
+          const isActive = pill.dataset.categoryValue === categoryInput.value;
+          if (isActive) {
+            pill.classList.add('is-active');
+          } else {
+            pill.classList.remove('is-active');
           }
+        });
+      }
+
+      categoryPills.forEach(pill => {
+        pill.addEventListener('click', (e) => {
+          e.preventDefault();
+          categoryInput.value = pill.dataset.categoryValue;
+          updateCategoryPills();
+        });
+      });
+
+      if (navAddExpenseBtn) navAddExpenseBtn.addEventListener('click', () => openModal());
+      if (mobileAddExpenseBtn) mobileAddExpenseBtn.addEventListener('click', () => openModal());
+      closeModalBtn?.addEventListener('click', closeModal);
+      cancelFormBtn?.addEventListener('click', closeModal);
+
+      transactionForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(transactionForm);
+        const transaction = {
+          title: formData.get('title').trim(),
+          amount: Number(formData.get('amount')),
+          category: String(formData.get('category')).toUpperCase(),
+          date: formData.get('date')
+        };
+
+        try {
+          const url = selectedTransactionForUpdate ? `${TRANSACTIONS_API_URL}/${selectedTransactionForUpdate.id}` : TRANSACTIONS_API_URL;
+          const method = selectedTransactionForUpdate ? 'PUT' : 'POST';
+          const response = await fetch(url, {
+            method: method,
+            headers: getAuthHeaders(),
+            body: JSON.stringify(transaction)
+          });
+
+          if (response.status === 401 || response.status === 403) {
+            localStorage.clear();
+            window.location.href = 'login.html?session=ended';
+            return;
+          }
+          if (!response.ok) throw new Error('Failed to save expense');
+
+          closeModal();
+          await fetchDashboardData();
+        } catch (error) {
+          console.error('Error saving expense:', error);
+          document.getElementById('formMessage').textContent = 'Error saving. Please try again.';
+          document.getElementById('formMessage').classList.add('text-red-600');
         }
       });
     });
   </script>
 </body>
+
 </html>

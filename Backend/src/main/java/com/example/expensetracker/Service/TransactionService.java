@@ -9,7 +9,6 @@ import com.example.expensetracker.Exception.ResourceNotFoundException;
 import com.example.expensetracker.Repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,7 +56,7 @@ public class TransactionService {
     }
 
     public void deleteTransaction(User user, Long id) {
-        Transaction transaction = transactionRepository.findByIdAndUser(id, user).orElseThrow(() -> new ResourceNotFoundException("Transaction not found with id: " + id));
+        transactionRepository.findByIdAndUser(id, user).orElseThrow(() -> new ResourceNotFoundException("Transaction not found with id: " + id));
         transactionRepository.deleteById(id);
     }
 

@@ -25,6 +25,9 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
 import java.util.List;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
@@ -75,9 +78,15 @@ public class AppConfig {
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login(oAuth2->oAuth2.failureHandler(
-                                ((request, response, exception)
-                                        -> log.info("OAuth2 login failed: {}", exception.getMessage())))
+                .oauth2Login(oAuth2 -> oAuth2.failureHandler((request, response, exception) -> {
+                            log.error("OAuth2 login failed: {}", exception.getMessage());
+                            try {
+                                String msg = URLEncoder.encode(exception.getMessage() == null ? "OAuth2 authentication failed" : exception.getMessage(), StandardCharsets.UTF_8);
+                                response.sendRedirect("http://127.0.0.1:5500/login.html?error=" + msg);
+                            } catch (IOException e) {
+                                log.error("Failed to redirect after OAuth2 failure", e);
+                            }
+                        })
                         .successHandler(oAuth2SuccessHandler)
                 );
 

@@ -4,6 +4,7 @@ package com.example.expensetracker.Service;
 import com.example.expensetracker.DTO.Response.LoginResponse;
 import com.example.expensetracker.Entity.User;
 import com.example.expensetracker.Enum.AuthProvider;
+import com.example.expensetracker.Exception.ResourceNotFoundException;
 import com.example.expensetracker.Exception.UserAlreadyPresentException;
 import com.example.expensetracker.Repository.UserDetailsRepository;
 import com.example.expensetracker.Security.AuthUtill;
@@ -24,7 +25,7 @@ public class OAuth2Service {
 
     public ResponseEntity<LoginResponse> handleOAuth2Login(OAuth2User oAuth2User, String registrationId) {
         if (oAuth2User == null) {
-            throw new RuntimeException("OAuth2 authentication failed.");
+            throw new ResourceNotFoundException("OAuth2 authentication failed.");
         }
 
         AuthProvider providerType =

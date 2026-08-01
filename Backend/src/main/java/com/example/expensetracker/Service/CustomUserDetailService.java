@@ -1,6 +1,5 @@
 package com.example.expensetracker.Service;
 
-import com.example.expensetracker.Exception.ResourceNotFoundException;
 import com.example.expensetracker.Repository.UserDetailsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
