@@ -2,13 +2,12 @@ package com.example.expensetracker.Config;
 
 
 import com.example.expensetracker.Security.JwtAuthFilter;
+import com.example.expensetracker.Security.OAuth2FailureHandler;
 import com.example.expensetracker.Security.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -19,26 +18,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.cors.CorsConfigurationSource;
 import java.util.List;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.io.IOException;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@Slf4j
 public class AppConfig {
 
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthFilter jwtAuthFilter;
     private final OAuth2SuccessHandler oAuth2SuccessHandler;
+    private final OAuth2FailureHandler oAuth2FailureHandler;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -78,15 +73,8 @@ public class AppConfig {
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login(oAuth2 -> oAuth2.failureHandler((request, response, exception) -> {
-                            log.error("OAuth2 login failed: {}", exception.getMessage());
-                            try {
-                                String msg = URLEncoder.encode(exception.getMessage() == null ? "OAuth2 authentication failed" : exception.getMessage(), StandardCharsets.UTF_8);
-                                response.sendRedirect("http://127.0.0.1:5500/login.html?error=" + msg);
-                            } catch (IOException e) {
-                                log.error("Failed to redirect after OAuth2 failure", e);
-                            }
-                        })
+                .oauth2Login(oAuth2 -> oAuth2
+                        .failureHandler(oAuth2FailureHandler)
                         .successHandler(oAuth2SuccessHandler)
                 );
 
