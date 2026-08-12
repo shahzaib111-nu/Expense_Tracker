@@ -42,7 +42,7 @@
       <!-- Logo / Brand -->
       <div class="flex flex-col items-center mb-5 sm:mb-6">
         <div
-          class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-white text-[0px] shadow-lg shadow-emerald-200 mb-3"
+          class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-blue-500 to-sky-600 flex items-center justify-center text-white text-[0px] shadow-lg shadow-blue-200 mb-3"
         >
           <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M5 8.5A3.5 3.5 0 0 1 8.5 5H18a2 2 0 0 1 2 2v10.5a2.5 2.5 0 0 1-2.5 2.5h-9A3.5 3.5 0 0 1 5 16.5v-8Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -80,7 +80,7 @@
               name="fullName"
               placeholder="John Doe"
               required
-              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
 
@@ -97,7 +97,7 @@
               name="email"
               placeholder="you@example.com"
               required
-              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
 
@@ -115,7 +115,7 @@
               placeholder="At least 8 characters"
               minlength="8"
               required
-              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
           </div>
 
@@ -133,7 +133,7 @@
               placeholder="Re-enter your password"
               minlength="8"
               required
-              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition"
+              class="w-full px-4 py-2.5 rounded-lg border border-slate-300 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
             />
             <p id="matchError" class="hidden text-xs text-red-500 mt-1.5">
               Passwords do not match.
@@ -144,7 +144,7 @@
           <button
             id="submitBtn"
             type="submit"
-            class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-lg transition shadow-md shadow-emerald-200"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition shadow-md shadow-blue-200"
           >
             Create Account
           </button>
@@ -161,7 +161,7 @@
           <button
             type="button"
             id="googleSignupBtn"
-            class="w-full flex min-h-11 items-center justify-center gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-emerald-200 hover:bg-slate-50 hover:shadow-md sm:px-4"
+            class="w-full flex min-h-11 items-center justify-center gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:bg-slate-50 hover:shadow-md sm:px-4"
           >
             <svg class="h-5 w-5 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -189,7 +189,7 @@
           Already have an account?
           <a
             href="login.html"
-            class="text-emerald-600 font-semibold hover:underline"
+            class="text-blue-600 font-semibold hover:underline"
             >Log in</a
           >
         </p>
@@ -211,7 +211,7 @@
     formMessage.textContent = message;
     formMessage.className =
       type === "success"
-        ? "text-sm mt-3 text-emerald-600"
+        ? "text-sm mt-3 text-blue-600"
         : "text-sm mt-3 text-red-500";
   }
 

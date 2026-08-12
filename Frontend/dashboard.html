@@ -67,11 +67,6 @@
       }
     }
 
-    /* Button hover animations - removed for add expense button */
-    .js-add-expense-btn:hover:not(:disabled) {
-      /* No transform animation */
-    }
-
     #navAddExpenseBtn,
     #mobileAddExpenseBtn {
       transition: none;
@@ -84,7 +79,7 @@
 
     /* Table row hover effect */
     tbody tr:hover {
-      background-color: rgba(16, 185, 129, 0.03);
+      background-color: rgba(37, 99, 235, 0.04);
     }
 
     /* Category pill styling */
@@ -93,10 +88,10 @@
     }
 
     .category-pill.is-active {
-      background-color: #059669;
-      border-color: #059669;
+      background-color: #2563eb;
+      border-color: #2563eb;
       color: #ffffff;
-      box-shadow: 0 4px 10px rgba(5, 150, 105, 0.25);
+      box-shadow: 0 4px 10px rgba(37, 99, 235, 0.25);
     }
 
     #amountDisplayInput::-webkit-outer-spin-button,
@@ -106,6 +101,7 @@
     }
 
     #amountDisplayInput {
+      appearance: none;
       -moz-appearance: textfield;
     }
   </style>
@@ -120,7 +116,7 @@
       <!-- Logo -->
       <a href="dashboard.html" class="flex items-center gap-3">
         <span
-          class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white shadow-md shadow-emerald-200">
+          class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white shadow-md shadow-blue-200">
           <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2" stroke-linecap="round"
               stroke-linejoin="round" />
@@ -132,7 +128,7 @@
       <!-- Navigation & Actions -->
       <nav class="hidden md:flex items-center gap-6">
         <a href="dashboard.html"
-          class="flex items-center gap-2 rounded-lg bg-emerald-50 px-3 py-2 text-sm font-semibold text-emerald-700">
+          class="flex items-center gap-2 rounded-lg bg-blue-50 px-3 py-2 text-sm font-semibold text-blue-700">
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
@@ -141,7 +137,7 @@
           Dashboard
         </a>
         <a href="transactions.html"
-          class="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-emerald-700 transition">
+          class="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-700 transition">
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <line x1="12" y1="1" x2="12" y2="23"></line>
@@ -151,7 +147,7 @@
         </a>
 
         <a href="profile.html"
-          class="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-emerald-700 transition">
+          class="flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-blue-700 transition">
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -172,22 +168,23 @@
         </button>
 
         <div class="flex items-center gap-3 pl-4 border-l border-slate-200">
-          <button id="navAddExpenseBtn"
-            class="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-5 py-2 text-sm font-bold text-white shadow-sm hover:bg-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-offset-2">
+          <button id="navAddExpenseBtn" type="button"
+            class="js-add-expense-btn inline-flex items-center gap-2 rounded-full bg-blue-500 px-5 py-2 text-sm font-bold text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
             <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none">
               <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
             </svg>
             Add Expense
           </button>
-          <div id="userAvatar"
-            class="flex h-9 w-9 items-center justify-center rounded-full bg-emerald-800 text-xs font-bold text-white cursor-pointer hover:bg-emerald-900 transition">
-          </div>
+          <a id="userAvatar" href="profile.html" aria-label="Open profile"
+            class="flex h-9 w-9 items-center justify-center rounded-full bg-blue-800 text-xs font-bold text-white cursor-pointer hover:bg-blue-900 transition">
+          </a>
         </div>
       </nav>
 
-      <button class="md:hidden p-2 text-slate-500">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+      <button id="mobileAddExpenseBtn" type="button" aria-label="Add expense"
+        class="md:hidden inline-flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white shadow-sm transition hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
         </svg>
       </button>
     </div>
@@ -199,11 +196,11 @@
     <section class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
       <div>
         <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Welcome, <span id="welcomeUsername"
-            class="text-emerald-600">User</span>! 👋</h1>
+            class="text-blue-600">User</span>! 👋</h1>
         <p class="mt-1 text-sm text-slate-500">Track your budget and analyze your spending.</p>
       </div>
-      <button id="mobileAddExpenseBtn"
-        class="md:hidden inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-emerald-700">
+      <button id="mobileWelcomeAddExpenseBtn"
+        class="md:hidden inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-blue-700">
         <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none">
           <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
         </svg>
@@ -235,7 +232,7 @@
               <p class="text-sm font-bold text-slate-500">Used</p>
               <p id="usedPercentage" class="mt-1 text-4xl font-black tracking-tight text-slate-900">0%</p>
               <div class="mt-3 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
-                <div id="usedProgressBar" class="h-full rounded-full bg-emerald-500 transition-all duration-500"
+                <div id="usedProgressBar" class="h-full rounded-full bg-blue-500 transition-all duration-500"
                   style="width: 0%"></div>
               </div>
             </div>
@@ -283,7 +280,7 @@
       <div class="rounded-[1.25rem] border border-slate-200 bg-white shadow-sm lg:col-span-2 flex flex-col">
         <div class="flex items-center justify-between border-b border-slate-100 p-6">
           <h2 class="text-xs font-black uppercase tracking-wider text-slate-400">Recent Spending</h2>
-          <a href="transactions.html" class="text-sm font-bold text-emerald-600 hover:text-emerald-700">View all</a>
+          <a href="transactions.html" class="text-sm font-bold text-blue-600 hover:text-blue-700">View all</a>
         </div>
 
         <div class="overflow-x-auto p-2">
@@ -302,13 +299,13 @@
   <div id="transactionModal"
     class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/55 px-3 py-6 backdrop-blur-sm">
     <section
-      class="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-lg border border-emerald-100 bg-white p-4 shadow-2xl shadow-slate-900/20 sm:p-6">
+      class="max-h-[92vh] w-full max-w-lg overflow-y-auto rounded-lg border border-blue-100 bg-white p-4 shadow-2xl shadow-slate-900/20 sm:p-6">
       <div class="mb-5 flex items-start justify-between gap-4">
         <div>
           <h2 id="transactionModalTitle" class="text-lg font-bold text-slate-900">Record an Expense</h2>
           <p id="transactionModalDescription" class="hidden"></p>
         </div>
-        <button id="closeModalBtn" type="button"
+        <button id="closeModalBtn" type="button" aria-label="Close expense form"
           class="flex h-9 w-9 shrink-0 items-center justify-center gap-1 rounded-lg text-slate-500 transition hover:bg-slate-50 hover:text-red-500">
           <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
             <path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
@@ -317,8 +314,8 @@
       </div>
 
       <form id="transactionForm" class="grid gap-5">
-        <div class="rounded-lg bg-emerald-50/80 border border-emerald-100 px-5 py-6 text-center">
-          <p class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-emerald-700">Amount</p>
+        <div class="rounded-lg bg-blue-50/80 border border-blue-100 px-5 py-6 text-center">
+          <p class="text-[11px] font-extrabold uppercase tracking-[0.18em] text-blue-700">Amount</p>
           <div class="mt-2 flex items-center justify-center gap-2">
             <span class="text-3xl font-extrabold text-slate-400">₨</span>
             <input id="amountDisplayInput" name="amount" type="number" min="0.01" step="0.01" required
@@ -331,12 +328,12 @@
           <div>
             <label for="title" class="mb-1.5 block text-sm font-semibold text-slate-700">Expense Name</label>
             <input id="title" name="title" type="text" required placeholder="e.g. Grocery Trip"
-              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 placeholder-slate-400 transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 placeholder-slate-400 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
           <div>
             <label for="date" class="mb-1.5 block text-sm font-semibold text-slate-700">Date</label>
             <input id="date" name="date" type="date" required
-              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 transition focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500">
+              class="w-full rounded-lg border border-slate-300 px-4 py-2.5 text-slate-800 transition focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
         </div>
 
@@ -358,20 +355,22 @@
               class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Entertainment</button>
             <button type="button" data-category-value="BILLS"
               class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Bills</button>
+            <button type="button" data-category-value="TRAVEL"
+              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Travel</button>
             <button type="button" data-category-value="RENT"
-              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Housing</button>
+              class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Rent</button>
             <button type="button" data-category-value="OTHER"
               class="category-pill rounded-full border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600">Other</button>
           </div>
         </div>
 
-        <p id="formMessage" class="text-sm font-medium text-emerald-600"></p>
+        <p id="formMessage" class="text-sm font-medium text-blue-600"></p>
 
         <div class="flex flex-wrap items-center gap-2">
           <button id="cancelFormBtn" type="button"
             class="inline-flex min-h-11 flex-1 items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-slate-300">Cancel</button>
           <button type="submit"
-            class="inline-flex min-h-11 flex-[2] items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-emerald-100 transition hover:bg-emerald-700">Save
+            class="inline-flex min-h-11 flex-[2] items-center justify-center rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-blue-100 transition hover:bg-blue-700">Save
             Expense</button>
         </div>
       </form>
@@ -440,10 +439,49 @@
       }).format(amount).replace('PKR', 'Rs');
     }
 
+    const SUPPORTED_CATEGORIES = new Set([
+      'FOOD',
+      'TRANSPORT',
+      'SHOPPING',
+      'HEALTH',
+      'EDUCATION',
+      'ENTERTAINMENT',
+      'BILLS',
+      'TRAVEL',
+      'RENT',
+      'OTHER'
+    ]);
+    const CATEGORY_LABELS = {
+      FOOD: 'Food',
+      TRANSPORT: 'Transport',
+      SHOPPING: 'Shopping',
+      HEALTH: 'Health',
+      EDUCATION: 'Education',
+      ENTERTAINMENT: 'Entertainment',
+      BILLS: 'Bills',
+      TRAVEL: 'Travel',
+      RENT: 'Rent',
+      OTHER: 'Other'
+    };
+
+    function toApiValue(value) {
+      const normalized = String(value || '').trim().replaceAll(' ', '_').toUpperCase();
+      if (normalized === 'TRANSPORTATION') return 'TRANSPORT';
+      if (normalized === 'HOUSING') return 'RENT';
+      if (normalized === 'UTILITIES' || normalized === 'BILLS_AND_UTILITIES') return 'BILLS';
+      if (normalized === 'FOOD_AND_DINING') return 'FOOD';
+      if (normalized === 'HEALTH_AND_FITNESS') return 'HEALTH';
+      return normalized;
+    }
+
+    function toSupportedCategory(value) {
+      const apiValue = toApiValue(value);
+      return SUPPORTED_CATEGORIES.has(apiValue) ? apiValue : 'OTHER';
+    }
+
     // Standardize Category labels
     function formatLabel(value) {
-      if (!value) return "Unknown";
-      return String(value).toLowerCase().replaceAll('_', ' ').replace(/\b\w/g, l => l.toUpperCase());
+      return CATEGORY_LABELS[toSupportedCategory(value)];
     }
 
     // Initialize Username Banner
@@ -475,7 +513,7 @@
 
     // Fetch live API data and sync UI
     async function fetchDashboardData() {
-      let token = localStorage.getItem('jwt') || localStorage.getItem('authToken');
+      let token = localStorage.getItem('authToken') || localStorage.getItem('jwt');
       if (!token) {
         window.location.href = 'login.html?session=ended';
         return;
@@ -580,7 +618,7 @@
         data: {
           datasets: [{
             data: [spentPortion, remainingPortion],
-            backgroundColor: ['#10b981', '#f1f5f9'],
+            backgroundColor: ['#3b82f6', '#f1f5f9'],
             borderWidth: 0,
             borderRadius: 20
           }]
@@ -623,7 +661,7 @@
           datasets: [{
             data: dataValues,
             backgroundColor: [
-              '#10b981', '#3b82f6', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4'
+              '#2563eb', '#0ea5e9', '#f59e0b', '#8b5cf6', '#ef4444', '#06b6d4', '#64748b', '#6366f1', '#14b8a6', '#94a3b8'
             ],
             borderWidth: 2,
             borderColor: '#ffffff',
@@ -676,7 +714,7 @@
           <tr class="transition hover:bg-slate-50/50 group">
             <td class="py-3 px-4">
               <div class="flex items-center gap-4">
-                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 shadow-sm">
+                <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 shadow-sm">
                   <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline>
                   </svg>
@@ -698,17 +736,40 @@
     // Initialize Components on Load
     document.addEventListener('DOMContentLoaded', () => {
 
+      // The OAuth success handler redirects here with the JWT in the URL.  Save
+      // it before any auth guard runs; otherwise a missing or expired token from
+      // a previous session sends the user back to login and discards this token.
+      const urlParams = new URLSearchParams(window.location.search);
+      let urlToken = urlParams.get('token');
+      if (urlToken) {
+        urlToken = urlToken.replace(/^Bearer\s+/, '').trim();
+        localStorage.setItem('authToken', urlToken);
+        localStorage.setItem('jwt', urlToken); // Keep legacy pages compatible.
+
+        const decodedUser = parseJwtDashboard(urlToken);
+        if (decodedUser) {
+          localStorage.setItem('user', JSON.stringify({
+            name: decodedUser.name || decodedUser.sub || decodedUser.email || 'User',
+            email: decodedUser.email || decodedUser.sub || '',
+            username: decodedUser.sub || decodedUser.name || 'User'
+          }));
+        }
+
+        // Do not leave a bearer token in browser history or the address bar.
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
       // --- JWT PROTECTION CHECK ---
       const token = localStorage.getItem('authToken') || localStorage.getItem('jwt');
       if (!token) {
-        window.location.href = 'login.html?redirect=dashboard';
+        window.location.replace('login.html?redirect=dashboard');
         return;
       }
 
       const expiryMatch = parseJwtDashboard(token);
-      if (expiryMatch?.exp && expiryMatch.exp * 1000 <= Date.now()) {
+      if (!expiryMatch || (expiryMatch.exp && expiryMatch.exp * 1000 <= Date.now())) {
         localStorage.clear();
-        window.location.href = 'login.html?session=ended';
+        window.location.replace('login.html?session=ended');
         return;
       }
 
@@ -724,29 +785,6 @@
         } catch (e) {
           userAvatar.textContent = 'U';
         }
-      }
-
-      // --- OAUTH REDIRECT TOKEN HANDLER ---
-      const urlParams = new URLSearchParams(window.location.search);
-      let urlToken = urlParams.get('token');
-
-      if (urlToken) {
-        urlToken = urlToken.replace(/^Bearer\s+/, '');
-        localStorage.setItem('jwt', urlToken);
-        localStorage.setItem('authToken', urlToken);
-
-        const decodedUser = parseJwtDashboard(urlToken);
-        if (decodedUser) {
-          const userObj = {
-            name: decodedUser.name || decodedUser.sub || decodedUser.email || "User",
-            email: decodedUser.email || decodedUser.sub || "",
-            username: decodedUser.sub || decodedUser.name || "User"
-          };
-          localStorage.setItem('user', JSON.stringify(userObj));
-        }
-
-        // Clean up URL so the token query parameter is removed from browser address bar
-        window.history.replaceState({}, document.title, window.location.pathname);
       }
 
       // Initialize UI and Fetch Data from Backend
@@ -782,6 +820,7 @@
       const transactionModal = document.getElementById('transactionModal');
       const navAddExpenseBtn = document.getElementById('navAddExpenseBtn');
       const mobileAddExpenseBtn = document.getElementById('mobileAddExpenseBtn');
+      const mobileWelcomeAddExpenseBtn = document.getElementById('mobileWelcomeAddExpenseBtn');
       const closeModalBtn = document.getElementById('closeModalBtn');
       const cancelFormBtn = document.getElementById('cancelFormBtn');
       const transactionForm = document.getElementById('transactionForm');
@@ -805,7 +844,7 @@
           document.getElementById('title').value = transaction.title || '';
           document.getElementById('amountDisplayInput').value = transaction.amount || '';
           document.getElementById('date').value = transaction.date || '';
-          categoryInput.value = transaction.category || 'FOOD';
+          categoryInput.value = toSupportedCategory(transaction.category);
           updateCategoryPills();
         } else {
           titleEl.textContent = 'Record an Expense';
@@ -828,11 +867,12 @@
       }
 
       function updateCategoryPills() {
-        categoryPills.forEach(pill => {
-          const isActive = pill.dataset.categoryValue === categoryInput.value;
-          if (isActive) {
-            pill.classList.add('is-active');
-          } else {
+          categoryPills.forEach(pill => {
+            const isActive = pill.dataset.categoryValue === categoryInput.value;
+            pill.setAttribute('aria-pressed', String(isActive));
+            if (isActive) {
+              pill.classList.add('is-active');
+            } else {
             pill.classList.remove('is-active');
           }
         });
@@ -848,6 +888,7 @@
 
       if (navAddExpenseBtn) navAddExpenseBtn.addEventListener('click', () => openModal());
       if (mobileAddExpenseBtn) mobileAddExpenseBtn.addEventListener('click', () => openModal());
+      if (mobileWelcomeAddExpenseBtn) mobileWelcomeAddExpenseBtn.addEventListener('click', () => openModal());
       closeModalBtn?.addEventListener('click', closeModal);
       cancelFormBtn?.addEventListener('click', closeModal);
 
@@ -857,7 +898,7 @@
         const transaction = {
           title: formData.get('title').trim(),
           amount: Number(formData.get('amount')),
-          category: String(formData.get('category')).toUpperCase(),
+          category: toSupportedCategory(formData.get('category')),
           date: formData.get('date')
         };
 
