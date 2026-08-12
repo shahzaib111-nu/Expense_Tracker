@@ -31,6 +31,7 @@ public class AuthUtill {
         return Jwts.builder()
                 .subject(user.getEmail())
                 .claim("name", user.getName())
+                .claim("authProvider", user.getAuthProvider() == null ? "LOCAL" : user.getAuthProvider().name())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + 1000 * 60*60)) // 1 day
                 .signWith(getSecretKey())

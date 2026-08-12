@@ -15,7 +15,6 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -26,8 +25,8 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
+    private static final String FRONTEND_BASE_URL = "http://127.0.0.1:5500";
     private final OAuth2Service oAuth2Service;
-    private final HandlerExceptionResolver handlerExceptionResolver;
 
 
     @Override
@@ -49,21 +48,24 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
                 String jwt = loginResponseBody.getJwt();
 
                 // 2. Redirect to Frontend Dashboard with JWT token
-                String redirectUrl = "http://127.0.0.1:5500/dashboard.html?token=" + URLEncoder.encode(jwt, StandardCharsets.UTF_8);
+                String redirectUrl = FRONTEND_BASE_URL + "/dashboard.html?token=" + URLEncoder.encode(jwt, StandardCharsets.UTF_8);
                 response.sendRedirect(redirectUrl);
                 return;
             }
 
-            // If no JWT returned, delegate to global handler
-            handlerExceptionResolver.resolveException(request, response, null,
-                    new IllegalStateException("OAuth2 login did not produce a token"));
+            redirectToLoginWithError(response, "OAuth2 login did not produce a token.");
 
         } catch (UserAlreadyPresentException ex) {
             log.warn("UserAlreadyPresentException: {}", ex.getMessage());
-            handlerExceptionResolver.resolveException(request, response, null, ex);
+            redirectToLoginWithError(response, ex.getMessage());
         } catch (Exception ex) {
             log.error("Exception during OAuth2 login: {}", ex.getMessage(), ex);
-            handlerExceptionResolver.resolveException(request, response, null, ex);
+            redirectToLoginWithError(response, "OAuth2 sign-in could not be completed. Please try again.");
         }
+    }
+
+    private void redirectToLoginWithError(HttpServletResponse response, String message) throws IOException {
+        String encodedMessage = URLEncoder.encode(message, StandardCharsets.UTF_8);
+        response.sendRedirect(FRONTEND_BASE_URL + "/login.html?error=" + encodedMessage);
     }
 }

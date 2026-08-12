@@ -32,7 +32,7 @@ public class ProfileService {
 
     public ProfileDTO getProfile(User user) {
         User user1=userDetailsRepository.findById(user.getId()).orElse(null);
-        return new ProfileDTO(user1.getProfilePic(),user1.getName(),user1.getEmail(),user1.getBudget());
+        return new ProfileDTO(user1.getProfilePic(), user1.getName(), user1.getEmail(), user1.getBudget(), user1.getAuthProvider());
     }
 
     public ProfileDTO changeBudget(User user, ChangeBudgetDTO request) {
